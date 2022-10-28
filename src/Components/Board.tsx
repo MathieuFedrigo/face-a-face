@@ -1,6 +1,6 @@
 import { Button, StyleSheet, View } from 'react-native';
 import { Brick } from '../Components/Brick';
-import { boardSelector, press } from '../redux/boardSlice';
+import { boardSelector, wrongAnswer, restartForLeft, restartForRight } from '../redux/boardSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 export const Board = () => {
@@ -13,7 +13,9 @@ export const Board = () => {
         <Brick number={3} side={board[3]} />
         <Brick number={2} side={board[2]} />
         <Brick number={1} side={board[1]} />
-        <Button title='Press' onPress={() => dispatch(press())}/>
+        <Button title='Wrong Answer' onPress={() => dispatch(wrongAnswer())}/>
+        <Button title='Reset for LEFT' onPress={() => dispatch(restartForLeft())}/>
+        <Button title='Reset for RIGHT' onPress={() => dispatch(restartForRight())}/>
       </View>
   );
 }

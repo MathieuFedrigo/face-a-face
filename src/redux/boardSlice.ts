@@ -8,7 +8,15 @@ interface BoardState {
   board: {[key in IBrick]: ISide};
 }
 
-const initialState: BoardState = {
+const initialStateLeft: BoardState = {
+  board: {
+    4: 'right',
+    3: 'left',
+    2: 'right',
+    1: 'left',
+  }
+};
+const initialStateRight: BoardState = {
   board: {
     4: 'left',
     3: 'right',
@@ -19,15 +27,36 @@ const initialState: BoardState = {
 
 export const boardSlice = createSlice({
   name: 'board',
-  initialState,
+  initialState: initialStateLeft,
   reducers: {
-    press: (state) => {
-      console.log('press')
+    wrongAnswer: ({board}) => {
+      if(board[4] !== board[3]){
+        board[4] = board[3]
+      } else {
+        if(board[3] !== board[2]){
+          board[4] = board[2]
+          board[3] = board[2]
+        } else {
+          if(board[2] !== board[1]){
+            board[4] = board[1]
+            board[3] = board[1]
+            board[2] = board[1]
+          } else {
+            const newSide = board[4] === 'left' ? 'right' : 'left'
+            board[4] = newSide
+            board[3] = newSide
+            board[2] = newSide
+            board[1] = newSide
+          }
+        }
+      }
     },
+    restartForLeft: (state) => { state.board = initialStateLeft.board },
+    restartForRight: (state) => { state.board = initialStateRight.board },
   }
 });
 
-export const { press } = boardSlice.actions;
+export const { wrongAnswer, restartForLeft, restartForRight } = boardSlice.actions;
 
 export const boardSelector = (state: RootState) => state.board.board;
 
