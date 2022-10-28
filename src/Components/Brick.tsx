@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { IBrick } from '../Types/Brick';
