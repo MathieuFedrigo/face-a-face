@@ -1,10 +1,11 @@
-import { StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 import { Brick } from '../Components/Brick';
-import { boardSelector } from '../redux/boardSlice';
-import { useAppSelector } from '../redux/hooks';
+import { boardSelector, press } from '../redux/boardSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 export const Board = () => {
   const board = useAppSelector(boardSelector);
+  const dispatch = useAppDispatch();
 
   return (
       <View style={styles.container}>
@@ -12,6 +13,7 @@ export const Board = () => {
         <Brick number={3} side={board[3]} />
         <Brick number={2} side={board[2]} />
         <Brick number={1} side={board[1]} />
+        <Button title='Press' onPress={() => dispatch(press())}/>
       </View>
   );
 }

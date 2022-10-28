@@ -21,11 +21,13 @@ export const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    pressSquare: (state, action: PayloadAction<IBrick>) => {},
+    press: (state) => {
+      console.log('press')
+    },
   }
 });
 
-export const { pressSquare } = boardSlice.actions;
+export const { press } = boardSlice.actions;
 
 export const boardSelector = (state: RootState) => state.board.board;
 
