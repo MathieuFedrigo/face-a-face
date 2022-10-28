@@ -1,11 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { Brick } from './src/Components/Brick';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Brick number={4} side='left' />
+      <Brick number={3} side='right' />
+      <Brick number={2} side='left' />
+      <Brick number={1} side='right' />
     </View>
   );
 }

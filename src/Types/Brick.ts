@@ -1,0 +1,1 @@
+export type IBrick = 1|2|3|4
