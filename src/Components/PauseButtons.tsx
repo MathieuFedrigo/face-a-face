@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { boardStatusSelector, pause } from "../redux/boardSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
@@ -21,8 +21,12 @@ export const PauseButtons: FC<{onPlay: () => void}> = ({onPlay}) => {
 
   return (
     <View style={styles.buttonContainer}>
-      <Button title={'PAUSE'} onPress={onPauseLeftPress}/>
-      <Button title={'PAUSE'} onPress={onPauseRightPress}/>
+      <TouchableOpacity onPress={onPauseLeftPress} style={styles.button}>
+        <Text>PAUSE</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onPauseRightPress} style={styles.button}>
+        <Text>PAUSE</Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -30,7 +34,15 @@ export const PauseButtons: FC<{onPlay: () => void}> = ({onPlay}) => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
+    flex: 1,
     flexDirection: 'row',
-  },
+},
+button: {
+    backgroundColor: 'red',
+    flex: 1,
+    alignItems: 'center',
+    height: 100,
+    marginHorizontal: 8,
+  }
 });
   
