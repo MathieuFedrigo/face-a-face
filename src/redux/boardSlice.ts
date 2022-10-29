@@ -33,7 +33,7 @@ const initialStateRight = {
 const initialState: BoardState = {
   ...initialStateLeft,
   time: 20000,
-  isPaused: false,
+  isPaused: true,
 }
 
 export const boardSlice = createSlice({

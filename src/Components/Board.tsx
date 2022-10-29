@@ -1,14 +1,31 @@
+import { useState } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import { Brick } from '../Components/Brick';
 import { useTimer } from '../Hooks/useTimer';
 import { boardSelector, wrongAnswer, restartForLeft, restartForRight, pause, boardStatusSelector } from '../redux/boardSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { ISide } from '../Types/Side';
 
 export const Board = () => {
   const board = useAppSelector(boardSelector);
   const isPaused = useAppSelector(boardStatusSelector);
+
   const dispatch = useAppDispatch();
   useTimer()
+  const [isWrongAnswerDisabled, setIsWrongAnswerDisabled] = useState(true)
+  const onPlayPausePress = () => {
+    if(isPaused) setIsWrongAnswerDisabled(false)
+    dispatch(pause())
+  }
+  const onWrongAnswerPress = () => {
+    setIsWrongAnswerDisabled(true)
+    dispatch(wrongAnswer())
+  }
+  const onResetFactory = (side: ISide) => () => {
+    if(side === 'left') dispatch(restartForLeft())
+    if(side === 'right') dispatch(restartForRight())
+    setIsWrongAnswerDisabled(true)
+  }
 
   return (
       <View style={styles.container}>
@@ -17,11 +34,15 @@ export const Board = () => {
         <Brick number={2} side={board[2]} />
         <Brick number={1} side={board[1]} />
         <View style={{height: 30}}/>
-        {isPaused ? <Button title='Wrong Answer' onPress={() => dispatch(wrongAnswer())}/> : null}
-        <Button title={isPaused ? 'PLAY' : 'PAUSE'} onPress={() => dispatch(pause())}/>
         <View style={styles.buttonContainer}>
-          <Button title='Reset for LEFT' onPress={() => dispatch(restartForLeft())}/>
-          <Button title='Reset for RIGHT' onPress={() => dispatch(restartForRight())}/>
+          {isPaused && !isWrongAnswerDisabled 
+            ? <Button title='Wrong Answer' onPress={onWrongAnswerPress}/>
+            : <Button title={isPaused ? 'PLAY' : 'PAUSE'} onPress={onPlayPausePress}/>
+          }
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button title='Reset for LEFT' onPress={onResetFactory('left')}/>
+          <Button title='Reset for RIGHT' onPress={onResetFactory('right')}/>
         </View>
       </View>
   );
