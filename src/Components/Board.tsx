@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import { Brick } from '../Components/Brick';
 import { useTimer } from '../Hooks/useTimer';
-import { boardSelector, wrongAnswer, restartForLeft, restartForRight, pause, boardStatusSelector } from '../redux/boardSlice';
+import { boardSelector, wrongAnswer, restartForLeft, restartForRight, boardStatusSelector } from '../redux/boardSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { ISide } from '../Types/Side';
+import { PauseButtons } from './PauseButtons';
+
 
 export const Board = () => {
   const board = useAppSelector(boardSelector);
@@ -13,10 +15,7 @@ export const Board = () => {
   const dispatch = useAppDispatch();
   useTimer()
   const [isWrongAnswerDisabled, setIsWrongAnswerDisabled] = useState(true)
-  const onPlayPausePress = () => {
-    if(isPaused) setIsWrongAnswerDisabled(false)
-    dispatch(pause())
-  }
+  const onPlayPausePress = () => { if(isPaused) setIsWrongAnswerDisabled(false) }
   const onWrongAnswerPress = () => {
     setIsWrongAnswerDisabled(true)
     dispatch(wrongAnswer())
@@ -29,6 +28,10 @@ export const Board = () => {
 
   return (
       <View style={styles.container}>
+        <View style={styles.buttonContainer}>
+          <Button title='Reset for LEFT' onPress={onResetFactory('left')}/>
+          <Button title='Reset for RIGHT' onPress={onResetFactory('right')}/>
+        </View>
         <Brick number={4} side={board[4]} />
         <Brick number={3} side={board[3]} />
         <Brick number={2} side={board[2]} />
@@ -37,12 +40,8 @@ export const Board = () => {
         <View style={styles.buttonContainer}>
           {isPaused && !isWrongAnswerDisabled 
             ? <Button title='Wrong Answer' onPress={onWrongAnswerPress}/>
-            : <Button title={isPaused ? 'PLAY' : 'PAUSE'} onPress={onPlayPausePress}/>
+            : <PauseButtons onPress={onPlayPausePress}/>
           }
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button title='Reset for LEFT' onPress={onResetFactory('left')}/>
-          <Button title='Reset for RIGHT' onPress={onResetFactory('right')}/>
         </View>
       </View>
   );
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonContainer: {
-    marginTop: 20,
+    marginBottom: 20,
     flexDirection: 'row',
   },
 });
