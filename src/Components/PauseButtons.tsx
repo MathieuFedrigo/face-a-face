@@ -8,13 +8,13 @@ export const PauseButtons: FC<{onPlay: () => void}> = ({onPlay}) => {
   const dispatch = useAppDispatch();
   const onPlayPress = () => {
     onPlay()
-    dispatch(pause())
+    dispatch(pause('both'))
   }
   const onPauseLeftPress = () => {
-    dispatch(pause())
+    dispatch(pause('left'))
   }
   const onPauseRightPress = () => {
-    dispatch(pause())
+    dispatch(pause("right"))
   }
 
   if (isPaused) return <Button title={'PLAY'} onPress={onPlayPress}/>

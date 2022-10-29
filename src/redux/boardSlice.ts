@@ -4,6 +4,8 @@ import { IBrick } from '../Types/Brick';
 import { ISide } from '../Types/Side';
 import { isRound1, isRound2, isRound3, isRound4 } from '../Helpers/round.helper';
 import { wrongAnswerAtRound1, wrongAnswerAtRound2, wrongAnswerAtRound3, wrongAnswerAtRound4 } from '../Helpers/wrongAnswerAtRoundN.helper';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { getActiveBrick } from '../Helpers/getActiveBrick.helper';
 
 export const TICK_INTERVAL_IN_MS = 100
 
@@ -13,7 +15,7 @@ export interface BoardState {
   isPaused: boolean;
 }
 
-const initialStateLeft = {
+const initialStateRight = {
   board: {
     4: 'right',
     3: 'left',
@@ -21,7 +23,7 @@ const initialStateLeft = {
     1: 'left',
   }
 } as const;
-const initialStateRight = {
+const initialStateLeft = {
   board: {
     4: 'left',
     3: 'right',
@@ -40,7 +42,7 @@ export const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    wrongAnswer: ({board, time, isPaused}) => {
+    wrongAnswer: ({board, time}) => {
       if (isRound4(time)) wrongAnswerAtRound4(board)
       if (isRound3(time)) wrongAnswerAtRound3(board)
       if (isRound2(time)) wrongAnswerAtRound2(board)
@@ -49,7 +51,13 @@ export const boardSlice = createSlice({
     restartForLeft: () => ({ ...initialState, board: initialStateLeft.board}),
     restartForRight: () => ({ ...initialState, board: initialStateRight.board}),
     tick: (state) => { if(!state.isPaused) { state.time = Math.max(0, state.time - TICK_INTERVAL_IN_MS)}},
-    pause: (state) => { state.isPaused = !state.isPaused},
+    pause: (state, action: PayloadAction<ISide | 'both'>) => { 
+      if (
+        action.payload === 'both'
+        || action.payload === 'left' && getActiveBrick(state) === 'left'
+        || action.payload === 'right' && getActiveBrick(state) === 'right'
+      ) state.isPaused = !state.isPaused
+    },
   }
 });
 

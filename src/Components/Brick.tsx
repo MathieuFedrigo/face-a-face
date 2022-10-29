@@ -19,7 +19,7 @@ export const Brick: FC<{number: IBrick, side: ISide}> = ({number, side}) => {
   if (finished) fillingPercentage = 1
 
   return (
-    <View style={[styles.container, {justifyContent: side === 'left' ? 'flex-end' : 'flex-start'}]}>
+    <View style={[styles.container, {justifyContent: side === 'right' ? 'flex-end' : 'flex-start'}]}>
       <View style={styles.brickContainer}>
         <View style={[styles.brick, {backgroundColor: '#ed890a'}]}/>
         <View style={[styles.indicator, {height: fillingPercentage * 150}, fillingPercentage > 0.95 ? roundBottomRadiusStyle : {}]} />
