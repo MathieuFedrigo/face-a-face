@@ -3,13 +3,21 @@ import { Button } from "react-native";
 import { boardStatusSelector, pause } from "../redux/boardSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
-export const PauseButtons: FC<{onPress: () => void}> = ({onPress}) => {
+export const PauseButtons: FC<{onPlay: () => void}> = ({onPlay}) => {
   const isPaused = useAppSelector(boardStatusSelector);
   const dispatch = useAppDispatch();
-  const onPlayPausePress = () => {
-    onPress()
+  const onPlayPress = () => {
+    onPlay()
+    dispatch(pause())
+  }
+  const onPauseLeftPress = () => {
+    dispatch(pause())
+  }
+  const onPauseRightPress = () => {
     dispatch(pause())
   }
 
-  return <Button title={isPaused ? 'PLAY' : 'PAUSE'} onPress={onPlayPausePress}/>
+  if (isPaused) return <Button title={'PLAY'} onPress={onPlayPress}/>
+
+  return <Button title={'PAUSE'} onPress={onPauseLeftPress}/>
 }

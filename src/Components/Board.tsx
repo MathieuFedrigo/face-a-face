@@ -40,7 +40,7 @@ export const Board = () => {
         <View style={styles.buttonContainer}>
           {isPaused && !isWrongAnswerDisabled 
             ? <Button title='Wrong Answer' onPress={onWrongAnswerPress}/>
-            : <PauseButtons onPress={onPlayPausePress}/>
+            : <PauseButtons onPlay={onPlayPausePress}/>
           }
         </View>
       </View>
