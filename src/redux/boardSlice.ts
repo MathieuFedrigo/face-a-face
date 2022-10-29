@@ -2,10 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from './store';
 import { IBrick } from '../Types/Brick';
 import { ISide } from '../Types/Side';
+import { isRound1, isRound2, isRound3, isRound4 } from '../Helpers/round.helper';
+import { wrongAnswerAtRound1, wrongAnswerAtRound2, wrongAnswerAtRound3, wrongAnswerAtRound4 } from '../Helpers/wrongAnswerAtRoundN.helper';
 
 export const TICK_INTERVAL_IN_MS = 100
 
-interface BoardState {
+export interface BoardState {
   board: {[key in IBrick]: ISide};
   time: number;
 }
@@ -36,27 +38,11 @@ export const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    wrongAnswer: ({board}) => {
-      if(board[4] !== board[3]){
-        board[4] = board[3]
-      } else {
-        if(board[3] !== board[2]){
-          board[4] = board[2]
-          board[3] = board[2]
-        } else {
-          if(board[2] !== board[1]){
-            board[4] = board[1]
-            board[3] = board[1]
-            board[2] = board[1]
-          } else {
-            const newSide = board[4] === 'left' ? 'right' : 'left'
-            board[4] = newSide
-            board[3] = newSide
-            board[2] = newSide
-            board[1] = newSide
-          }
-        }
-      }
+    wrongAnswer: ({board, time}) => {
+      if (isRound4(time)) wrongAnswerAtRound4(board)
+      if (isRound3(time)) wrongAnswerAtRound3(board)
+      if (isRound2(time)) wrongAnswerAtRound2(board)
+      if (isRound1(time)) wrongAnswerAtRound1(board)
     },
     restartForLeft: () => ({ ...initialState, board: initialStateLeft.board}),
     restartForRight: () => ({ ...initialState, board: initialStateRight.board}),
