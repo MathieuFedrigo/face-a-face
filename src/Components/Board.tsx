@@ -13,11 +13,11 @@ export const Board = () => {
 
   return (
       <View style={styles.container}>
-        <Text>Time left: {timeLeft/1000}</Text>
         <Brick number={4} side={board[4]} />
         <Brick number={3} side={board[3]} />
         <Brick number={2} side={board[2]} />
         <Brick number={1} side={board[1]} />
+        <View style={{height: 30}}/>
         <Button title='Wrong Answer' onPress={() => dispatch(wrongAnswer())}/>
         <Button title={isPaused ? 'PLAY' : 'PAUSE'} onPress={() => dispatch(pause())}/>
         <View style={styles.buttonContainer}>
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonContainer: {
+    marginTop: 20,
     flexDirection: 'row',
   },
 });
