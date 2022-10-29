@@ -1,14 +1,18 @@
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { Brick } from '../Components/Brick';
-import { boardSelector, wrongAnswer, restartForLeft, restartForRight } from '../redux/boardSlice';
+import { useTimer } from '../Hooks/useTimer';
+import { boardSelector, wrongAnswer, restartForLeft, restartForRight, timeSelector, tick } from '../redux/boardSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 export const Board = () => {
   const board = useAppSelector(boardSelector);
+  const timeLeft = useAppSelector(timeSelector);
   const dispatch = useAppDispatch();
+  useTimer()
 
   return (
       <View style={styles.container}>
+        <Text>Time left: {timeLeft/1000}</Text>
         <Brick number={4} side={board[4]} />
         <Brick number={3} side={board[3]} />
         <Brick number={2} side={board[2]} />
