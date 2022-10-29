@@ -10,6 +10,7 @@ export const TICK_INTERVAL_IN_MS = 100
 export interface BoardState {
   board: {[key in IBrick]: ISide};
   time: number;
+  isPaused: boolean;
 }
 
 const initialStateLeft = {
@@ -31,14 +32,15 @@ const initialStateRight = {
 
 const initialState: BoardState = {
   ...initialStateLeft,
-  time: 20000
+  time: 20000,
+  isPaused: false,
 }
 
 export const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    wrongAnswer: ({board, time}) => {
+    wrongAnswer: ({board, time, isPaused}) => {
       if (isRound4(time)) wrongAnswerAtRound4(board)
       if (isRound3(time)) wrongAnswerAtRound3(board)
       if (isRound2(time)) wrongAnswerAtRound2(board)
@@ -46,13 +48,15 @@ export const boardSlice = createSlice({
     },
     restartForLeft: () => ({ ...initialState, board: initialStateLeft.board}),
     restartForRight: () => ({ ...initialState, board: initialStateRight.board}),
-    tick: (state) => { state.time = Math.max(0, state.time - TICK_INTERVAL_IN_MS)}
+    tick: (state) => { if(!state.isPaused) { state.time = Math.max(0, state.time - TICK_INTERVAL_IN_MS)}},
+    pause: (state) => { state.isPaused = !state.isPaused},
   }
 });
 
-export const { wrongAnswer, restartForLeft, restartForRight, tick } = boardSlice.actions;
+export const { wrongAnswer, restartForLeft, restartForRight, tick, pause } = boardSlice.actions;
 
 export const boardSelector = (state: RootState) => state.board.board;
 export const timeSelector = (state: RootState) => state.board.time;
+export const boardStatusSelector = (state: RootState) => state.board.isPaused;
 
 export default boardSlice.reducer;
