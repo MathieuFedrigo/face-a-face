@@ -18,8 +18,10 @@ export const Board = () => {
         <Brick number={2} side={board[2]} />
         <Brick number={1} side={board[1]} />
         <Button title='Wrong Answer' onPress={() => dispatch(wrongAnswer())}/>
-        <Button title='Reset for LEFT' onPress={() => dispatch(restartForLeft())}/>
-        <Button title='Reset for RIGHT' onPress={() => dispatch(restartForRight())}/>
+        <View style={styles.buttonContainer}>
+          <Button title='Reset for LEFT' onPress={() => dispatch(restartForLeft())}/>
+          <Button title='Reset for RIGHT' onPress={() => dispatch(restartForRight())}/>
+        </View>
       </View>
   );
 }
@@ -27,8 +29,11 @@ export const Board = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#2d638d',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
   },
 });
