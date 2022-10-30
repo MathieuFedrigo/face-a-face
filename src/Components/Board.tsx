@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import { Brick } from '../Components/Brick';
 import { useTimer } from '../Hooks/useTimer';
-import { boardSelector, wrongAnswer, restartForLeft, restartForRight, boardStatusSelector } from '../redux/boardSlice';
+import { boardSelector, wrongAnswer, restartForLeft, restartForRight, boardStatusSelector, play, pause } from '../redux/boardSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { ISide } from '../Types/Side';
 import { PauseButtons } from './PauseButtons';
@@ -15,7 +15,6 @@ export const Board = () => {
   const dispatch = useAppDispatch();
   useTimer()
   const [isWrongAnswerDisabled, setIsWrongAnswerDisabled] = useState(true)
-  const onPlayPausePress = () => { if(isPaused) setIsWrongAnswerDisabled(false) }
   const onWrongAnswerPress = () => {
     setIsWrongAnswerDisabled(true)
     dispatch(wrongAnswer())
@@ -25,6 +24,8 @@ export const Board = () => {
     if(side === 'right') dispatch(restartForRight())
     setIsWrongAnswerDisabled(true)
   }
+  const onPlayPause = () => { if (isPaused) { dispatch(play()) } else { dispatch(pause('both')) } }
+  useEffect(() => { if (isPaused) setIsWrongAnswerDisabled(false) }, [isPaused])
 
   return (
       <View style={styles.container}>
@@ -32,20 +33,17 @@ export const Board = () => {
           <Button title='Reset for LEFT' onPress={onResetFactory('left')}/>
           <Button title='Reset for RIGHT' onPress={onResetFactory('right')}/>
         </View>
-          {isPaused && !isWrongAnswerDisabled 
-            ? <Button title='Wrong Answer' onPress={onWrongAnswerPress}/>
-            : <PauseButtons onPlay={onPlayPausePress}/>
-          }
+        <View style={styles.buttonContainer}>
+          <Button title={isPaused ? 'PLAY' : 'PAUSE'} onPress={onPlayPause}/>
+          {isPaused && !isWrongAnswerDisabled ? <Button title='Wrong Answer' onPress={onWrongAnswerPress}/> : null}
+        </View>
         <Brick number={4} side={board[4]} />
         <Brick number={3} side={board[3]} />
         <Brick number={2} side={board[2]} />
         <Brick number={1} side={board[1]} />
         <View style={{height: 30}}/>
         <View style={styles.buttonContainer}>
-          {isPaused && !isWrongAnswerDisabled 
-            ? <Button title='Wrong Answer' onPress={onWrongAnswerPress}/>
-            : <PauseButtons onPlay={onPlayPausePress}/>
-          }
+          <PauseButtons />
         </View>
       </View>
   );
@@ -59,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonContainer: {
-    marginBottom: 20,
+    marginBottom: 5,
     flexDirection: 'row',
   },
 });
