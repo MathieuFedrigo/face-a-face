@@ -67,5 +67,6 @@ export const { wrongAnswer, restartForLeft, restartForRight, tick, pause, play }
 export const boardSelector = (state: RootState) => state.board.board;
 export const timeSelector = (state: RootState) => state.board.time;
 export const boardStatusSelector = (state: RootState) => state.board.isPaused;
+export const activeSideSelector = (state: RootState) => getActiveBrick(state.board);
 
 export default boardSlice.reducer;
