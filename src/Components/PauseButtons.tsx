@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { activeSideSelector, pause } from "../redux/boardSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Audio } from 'expo-av';
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export const PauseButtons = () => {
   const dispatch = useAppDispatch();
@@ -16,21 +16,17 @@ export const PauseButtons = () => {
     playSound()
   }
 
-  const [sound, setSound] = useState<Audio.Sound>();
-
-  async function playSound() {
-    await sound.playAsync();
-  }
+  const sound = useRef<Audio.Sound>();
 
   useEffect(() => {
-    const loadSound = async () => {
-      const { sound } = await Audio.Sound.createAsync( require('../../assets/buzz.mp3'));
-      setSound(sound);
-    }
-    loadSound()
-
-    return () => { sound.unloadAsync() };
+    return () => { sound.current.unloadAsync() }
   }, []);
+
+  const playSound = async () => {
+    const { sound: audio } = await Audio.Sound.createAsync(require("../../assets/buzz.mp3"));
+    sound.current = audio
+    await sound.current.playAsync();
+  };
 
 
   return (
