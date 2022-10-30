@@ -14,27 +14,28 @@ export const PauseButtons = () => {
   return (
     <View style={styles.buttonContainer}>
       <TouchableOpacity onPress={onPauseLeftPress} style={styles.button}>
-        <Text>PAUSE</Text>
+        <Text>BUZZ</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={onPauseRightPress} style={styles.button}>
-        <Text>PAUSE</Text>
+        <Text>BUZZ</Text>
       </TouchableOpacity>
     </View>
   )
 }
 
-
 const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     flexDirection: 'row',
-},
-button: {
+  },
+  button: {
     backgroundColor: 'red',
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     height: 100,
     marginHorizontal: 8,
+    borderRadius: 16,
   }
 });
   

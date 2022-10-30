@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Brick } from '../Components/Brick';
 import { useTimer } from '../Hooks/useTimer';
 import { boardSelector, wrongAnswer, restartForLeft, restartForRight, boardStatusSelector, play, pause } from '../redux/boardSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { ISide } from '../Types/Side';
+import { Button } from './Button';
 import { PauseButtons } from './PauseButtons';
 
 
@@ -35,7 +36,7 @@ export const Board = () => {
         </View>
         <View style={styles.buttonContainer}>
           <Button title={isPaused ? 'PLAY' : 'PAUSE'} onPress={onPlayPause}/>
-          {isPaused && !isWrongAnswerDisabled ? <Button title='Wrong Answer' onPress={onWrongAnswerPress}/> : null}
+          <Button title='Wrong Answer' onPress={onWrongAnswerPress} disabled={!isPaused || isWrongAnswerDisabled} />
         </View>
         <Brick number={4} side={board[4]} />
         <Brick number={3} side={board[3]} />
