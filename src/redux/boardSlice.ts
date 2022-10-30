@@ -56,12 +56,13 @@ export const boardSlice = createSlice({
         action.payload === 'both'
         || action.payload === 'left' && getActiveBrick(state) === 'left'
         || action.payload === 'right' && getActiveBrick(state) === 'right'
-      ) state.isPaused = !state.isPaused
+      ) state.isPaused = true
     },
+    play: (state) => { state.isPaused = false }
   }
 });
 
-export const { wrongAnswer, restartForLeft, restartForRight, tick, pause } = boardSlice.actions;
+export const { wrongAnswer, restartForLeft, restartForRight, tick, pause, play } = boardSlice.actions;
 
 export const boardSelector = (state: RootState) => state.board.board;
 export const timeSelector = (state: RootState) => state.board.time;

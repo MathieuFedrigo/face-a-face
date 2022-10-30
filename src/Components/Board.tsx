@@ -32,6 +32,10 @@ export const Board = () => {
           <Button title='Reset for LEFT' onPress={onResetFactory('left')}/>
           <Button title='Reset for RIGHT' onPress={onResetFactory('right')}/>
         </View>
+          {isPaused && !isWrongAnswerDisabled 
+            ? <Button title='Wrong Answer' onPress={onWrongAnswerPress}/>
+            : <PauseButtons onPlay={onPlayPausePress}/>
+          }
         <Brick number={4} side={board[4]} />
         <Brick number={3} side={board[3]} />
         <Brick number={2} side={board[2]} />
