@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { activeSideSelector, pause } from "../redux/boardSlice";
+import { activeSideSelector, isOverSelector, pause } from "../redux/boardSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Audio } from 'expo-av';
 import { useEffect, useRef } from "react";
@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 export const PauseButtons = () => {
   const dispatch = useAppDispatch();
   const activeSide = useAppSelector(activeSideSelector);
+  const isOver = useAppSelector(isOverSelector);
   const onPauseLeftPress = () => {
     dispatch(pause('left'))
     playSound()
@@ -31,10 +32,10 @@ export const PauseButtons = () => {
 
   return (
     <View style={styles.buttonContainer}>
-      <TouchableOpacity onPress={onPauseLeftPress} style={styles.button} disabled={activeSide === 'right'}>
+      <TouchableOpacity onPress={onPauseLeftPress} style={styles.button} disabled={isOver || activeSide === 'right'}>
         <Text>BUZZ</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={onPauseRightPress} style={styles.button} disabled={activeSide === 'left'}>
+      <TouchableOpacity onPress={onPauseRightPress} style={styles.button} disabled={isOver || activeSide === 'left'}>
         <Text>BUZZ</Text>
       </TouchableOpacity>
     </View>

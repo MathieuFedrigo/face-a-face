@@ -66,6 +66,7 @@ export const { wrongAnswer, restartForLeft, restartForRight, tick, pause, play }
 
 export const boardSelector = (state: RootState) => state.board.board;
 export const timeSelector = (state: RootState) => state.board.time;
+export const isOverSelector = (state: RootState) => state.board.time === 0;
 export const boardStatusSelector = (state: RootState) => state.board.isPaused;
 export const activeSideSelector = (state: RootState) => getActiveBrick(state.board);
 
